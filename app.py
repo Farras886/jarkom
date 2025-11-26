@@ -2,17 +2,18 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from flask_sqlalchemy import SQLAlchemy
 import requests
-from datetime import datetime
+# 1. TAMBAHKAN 'timedelta' DI SINI
+from datetime import datetime, timedelta 
 
 app = Flask(__name__)
+# ... (Config lain tetap sama) ...
 app.config['SECRET_KEY'] = 'rahasia_project_akhir'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cuaca.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
-
-API_KEY = "f437ef3ab68d2f3b2cf1d916f89d2448" 
+API_KEY = "f437ef3ab68d2f3b2cf1d916f89d2448"
 
 class RiwayatPencarian(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,18 +29,16 @@ def index():
     return render_template('index.html')
 
 def get_weather_data(city):
-    # 1. Ambil Cuaca Saat Ini (Tambah lang=id)
+    # ... (Request API weather & forecast tetap sama) ...
     url_weather = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric&lang=id"
     res_weather = requests.get(url_weather).json()
     
     if res_weather.get('cod') != 200:
         return None
 
-    # 2. Ambil Forecast (Tambah lang=id)
     url_forecast = f"https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units=metric&lang=id"
     res_forecast = requests.get(url_forecast).json()
 
-    # 3. Data Grafik & Kesimpulan
     chart_labels = []
     chart_temps = []
     
@@ -48,26 +47,35 @@ def get_weather_data(city):
     will_rain = False
     rain_time = ""
     
-    
-    for item in res_forecast['list'][:5]:
-        jam = item['dt_txt'].split(' ')[1][:5]
+    # 2. UPDATE LOGIKA LOOPING INI
+    for item in res_forecast['list'][:8]: # Ambil 8 data (24 jam kedepan)
+        # KONVERSI WAKTU UTC KE WIB
+        utc_time_str = item['dt_txt'] # Contoh: "2025-11-26 15:00:00"
+        utc_dt = datetime.strptime(utc_time_str, "%Y-%m-%d %H:%M:%S")
+        
+        # Tambah 7 Jam untuk WIB
+        wib_dt = utc_dt + timedelta(hours=7)
+        
+        # Ambil Jam yang sudah WIB (Hanya Jam:Menit)
+        jam_indo = wib_dt.strftime("%H:%M") 
+        
+        # Masukkan ke data grafik
+        chart_labels.append(jam_indo)
+        chart_temps.append(round(item['main']['temp']))
+        
+        # Hitung Rata-rata & Cek Hujan
         suhu = item['main']['temp']
         kondisi = item['weather'][0]['main']
-        
-        chart_labels.append(jam)
-        chart_temps.append(round(suhu))
-        
         temp_total += suhu
         count += 1
         
         if kondisi in ['Rain', 'Thunderstorm', 'Drizzle'] and not will_rain:
             will_rain = True
-            rain_time = jam
+            rain_time = jam_indo # Gunakan jam yang sudah dikonversi
 
-    # Hitung Rata-rata
     avg_temp = round(temp_total / count, 1) if count > 0 else 0
     
-    # LOGIKA KESIMPULAN (BAHASA INDONESIA)
+    # ... (Logika Saran tetap sama) ...
     saran = ""
     if will_rain:
         saran = f"⚠️ Waspada! Diprediksi hujan turun sekitar jam {rain_time}. Siapkan payung."
@@ -81,8 +89,8 @@ def get_weather_data(city):
     return {
         'weather': res_weather,
         'forecast': res_forecast,
-        'summary': saran,        # <-- INI YANG DICARI JAVASCRIPT
-        'avg_temp': avg_temp,    # <-- DATA RATA-RATA
+        'summary': saran,
+        'avg_temp': avg_temp,
         'chart_data': {
             'labels': chart_labels,
             'temps': chart_temps
