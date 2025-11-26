@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    color: white;
+    font-weight: 600;
+}
+
+body {
+    background: url(assets/bg.jpg);
+    width: 100%;
+    height: 100dvh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100dvh;
+    background: rgb(0, 0, 0, 0.15);
+    backdrop-filter: blur(15px);
+}
+
+.regular-text {
+    font-weight: 400;
+}
+
+.main-container {
+    width: 380px;
+    height: 100vh; /* Tinggi pas layar */
+    background: linear-gradient(to top, rgb(0, 0, 0, 0.3), rgb(255, 255, 255, 0.15));
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    
+    /* Flexbox untuk mengatur Header vs Konten */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Mencegah container utama bocor */
+}
+
+.input-container {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.city-input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 99px;
+    border: 3px solid transparent;
+    background: rgb(0, 0, 0, 0.15);
+    outline: none;
+    font-weight: 500;
+    transition: 0.25s border;
+    padding-right: 45px;
+}
+
+.city-input:focus {
+    border: 3px solid rgb(0, 0, 0, 0.15);
+}
+
+.city-input::placeholder {
+    color: rgb(255, 255, 255, 0.75);
+}
+
+.chart-container {
+    width: 100%;
+    min-height: 180px; /* Pakai min-height biar aman */
+    flex-shrink: 0;    /* Mencegah grafik gepeng saat discroll */
+}
+
+.search-btn {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    display: flex;
+    border: none;
+    cursor: pointer;
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+    /* LOGIKA SCROLL */
+    flex: 1;            /* Mengambil sisa ruang kosong ke bawah */
+    overflow-y: auto;   /* Scroll jika konten kepanjangan */
+    padding-right: 5px; /* Jarak untuk scrollbar */
+    padding-bottom: 10px;
+}
+.weather-info::-webkit-scrollbar {
+    width: 0px; /* Hilangkan visual scrollbar */
+    background: transparent;
+}
+
+.location-date-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.weather-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weather-img {
+    width: 120px;
+    height: 120px;
+}
+
+.weather-summary-info {
+    text-align: end;
+}
+.summary-box {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 15px;
+    border-radius: 15px;
+    border-left: 5px solid #fff;
+    flex-shrink: 0; /* Mencegah kotak saran gepeng */
+}
+.weather-condition {
+    display: flex;
+    justify-content: space-between;
+}
+
+.condition-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.condition-item span img {
+    width: 70%;
+}
+
+.forecast-container {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto; /* Scroll Samping untuk Forecast */
+    padding-bottom: 12px;
+    flex-shrink: 0; /* Mencegah forecast gepeng */
+}
+
+.forecast-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.forecast-container::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0, 0.1);
+    border-radius: 99px;
+}
+
+.forecast-container::-webkit-scrollbar-thumb {
+    background: rgb(0, 0, 0, 0.15);
+    border-radius: 99px;
+}
+
+.forecast-item {
+    min-width: 70px;
+    background: rgb(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    align-items: center;
+    border-radius: 12px;
+    transition: 0.3s background;
+}
+
+.forecast-item:hover {
+    background: rgb(255, 255, 255, 0.15);
+}
+
+.forecast-image {
+    width: 35px;
+    height: 35px;
+}
+
+.section-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    margin-top: 25%;
+}
+
+.section-message img {
+    height: 180px;
+    width: fit-content;
+}

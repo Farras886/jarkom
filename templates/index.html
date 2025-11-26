@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Weather App Fullstack</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    </head>
+    <body>
+        <main class="main-container">
+            <header class="input-container">
+                <input class="city-input" placeholder="Search City" type="text">
+                <button class="search-btn">
+                    <span class="material-symbols-outlined">
+                        <img src="{{ url_for('static', filename='assets/search.svg') }}" />
+                    </span>
+                </button>
+            </header>
+
+            <section class="weather-info" style="display: none;" >
+                <div class="location-date-container">
+                    <div class="location">
+                        <span class="material-symbols-outlined">
+                            <img src="{{ url_for('static', filename='assets/map-pin.svg') }}" />
+                        </span>
+                        <h4 class="city-text">Jakarta</h4>
+                    </div>
+                    
+                    <div class="date-time-info" style="text-align: right;">
+                        <h5 class="curdate-text regular-text">Senin, 1 Jan</h5>
+                        <h5 id="jam-digital" class="regular-text" style="font-size: 1.2rem; margin-top: 2px;">00:00:00</h5>
+                    </div>
+                </div>
+
+                <div class="weather-container">
+                    <img src="" alt="" class="weather-img"/>
+                    <div class="weather-summary-info">
+                        <h1 class="temp-text">29 °C</h1>
+                        <h3 class="condition-text regular-text">Clouds</h3>
+                    </div>
+                </div>
+
+                <div class="chart-container" style="margin-top: 20px; height: 150px;">
+                    <canvas id="weatherChart"></canvas>
+                </div>
+                <div class="summary-box" id="kotak_saran" style="display: none;">
+                    <p class="summary-text" id="teks_saran">Menunggu data...</p>
+                </div>
+                <div class="weather-condition" style="margin-top: 15px;">
+                    <div class="condition-item">
+                        <span class="material-symbols-outlined">
+                            <img src="{{ url_for('static', filename='assets/weather/humidity.png') }}" />
+                        </span>
+                        <div class="condition-info">
+                            <h5 class="regular-text">Kelembapan</h5>
+                            <h5 class="humidity-text">55%</h5>
+                        </div>
+                    </div>
+
+                    <div class="condition-item">
+                        <span class="material-symbols-outlined">
+                            <img src="{{ url_for('static', filename='assets/weather/wind.png') }}" />
+                        </span>
+                        <div class="condition-info">
+                            <h5 class="regular-text">Kecepatan Angin</h5>
+                            <h5 class="wind-text">2 M/s</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="forecast-container">
+                    </div>
+            </section>
+
+            <section class="search-city section-message">
+                <img src="{{ url_for('static', filename='assets/message/search-city.png') }}" />
+                <div>
+                    <h1>Search City</h1>
+                    <h4 class="regular-text">Find out the weather conditions</h4>
+                </div>
+            </section>
+
+            <section class="not-found section-message" style="display: none;">
+                <img src="{{ url_for('static', filename='assets/message/not-found.png') }}" />
+                <div>
+                    <h1>Not Found</h1>
+                    <h4 class="regular-text">City not found</h4>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

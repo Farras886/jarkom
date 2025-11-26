@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Weather App</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+    <body>
+        <main class="main-container">
+            <header class="input-container">
+                <input class="city-input" placeholder="Search City" type="text">
+                <button class="search-btn">
+                    <span class="material-symbols-outlined">
+                        <img src="assets/search.svg" />
+                    </span>
+                </button>
+            </header>
+            <div class="chart-container">
+                <canvas id="weatherChart"></canvas>
+            </div>
+
+            <div class="summary-box" id="kotak_saran" style="display: none;">
+                <p class="summary-text" id="teks_saran">Menunggu data...</p>
+            </div>
+
+            <div class="weather-condition">
+            </div>
+
+            <section class="weather-info" style="display: none;" >
+                <div class="location-date-container">
+                    <div class="location">
+                        <span class="material-symbols-outlined">
+                            <img src="assets/map-pin.svg" />
+                        </span>
+                        <h4 class="city-text">Jakarta</h4>
+                    </div>
+                    <h5 class="curdate-text regular-text">Wed, 26 Nov</h5>
+                </div>
+
+                <div class="weather-container">
+                    <img src="assets/weather/clouds.svg" alt="" class="weather-img"/>
+                    <div class="weather-summary-info">
+                        <h1 class="temp-text">29 °C</h1>
+                        <h3 class="condition-text regular-text">Clouds</h3>
+                    </div>
+                </div>
+
+                <div class="weather-condition">
+                    <div class="condition-item">
+                        <span class="material-symbols-outlined">
+                            <img src="assets/weather/humidity.png" />
+                        </span>
+                        <div class="condition-info">
+                            <h5 class="regular-text">Humidity</h5>
+                            <h5 class="humidity-text">55%</h5>
+                        </div>
+                    </div>
+
+                    <div class="condition-item">
+                        <span class="material-symbols-outlined">
+                            <img src="assets/weather/wind.png" />
+                        </span>
+                        <div class="condition-info">
+                            <h5 class="regular-text">Wind Speed</h5>
+                            <h5 class="wind-text">2 M/s</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="forecast-container">
+                    <div class="forecast-item">
+                        <h5 class="forecast-date regular-text">27 Nov</h5>
+                        <img class="forecast-image" src="assets/weather/thunderstorm.svg" />
+                        <h5 class="forecast-temp">29 °C</h5>
+                    </div>
+                    <div class="forecast-item">
+                        <h5 class="forecast-date regular-text">27 Nov</h5>
+                        <img class="forecast-image" src="assets/weather/thunderstorm.svg" />
+                        <h5 class="forecast-temp">29 °C</h5>
+                    </div>
+                    <div class="forecast-item">
+                        <h5 class="forecast-date regular-text">27 Nov</h5>
+                        <img class="forecast-image" src="assets/weather/thunderstorm.svg" />
+                        <h5 class="forecast-temp">29 °C</h5>
+                    </div>
+                    <div class="forecast-item">
+                        <h5 class="forecast-date regular-text">27 Nov</h5>
+                        <img class="forecast-image" src="assets/weather/thunderstorm.svg" />
+                        <h5 class="forecast-temp">29 °C</h5>
+                    </div>
+                </div>
+            </section>
+
+            <section class="search-city section-message">
+                <img src="assets/message/search-city.png" />
+                <div>
+                    <h1>Search City</h1>
+                    <h4 class="regular-text">
+                        Find out the weather conditions on the city 
+                    </h4>
+                </div>
+            </section>
+
+            <section class="not-found section-message" style="display: none;">
+                <img src="assets/message/not-found.png" />
+                <div>
+                    <h1>Search City</h1>
+                    <h4 class="regular-text">
+                        Find out the weather conditions on the city 
+                    </h4>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
