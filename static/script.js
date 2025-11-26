@@ -35,6 +35,11 @@ const translateWeather = {
     "Tornado": "Puting Beliung"
 };
 
+let currentCity = ""; 
+let countdownInterval = null;
+const UPDATE_DURATION = 300; // 300 detik = 5 menit
+let timeLeft = UPDATE_DURATION; // Waktu tersisa yang berjalan
+
 searchBtn.addEventListener('click', () => {
     if(cityInput.value.trim() != '') {
         requestWeather(cityInput.value)
@@ -50,6 +55,21 @@ cityInput.addEventListener('keydown', (event) => {
         cityInput.blur()
     }
 })
+
+function handleSearch() {
+    if(cityInput.value.trim() != '') {
+        currentCity = cityInput.value;
+        
+        requestWeather(currentCity, false); // Manual Search
+        
+        // RESET TIMER SETIAP KALI CARI MANUAL
+        // Supaya user gak kaget baru cari 10 detik tiba-tiba refresh sendiri
+        resetCountdown(); 
+        
+        cityInput.value = '';
+        cityInput.blur();
+    }
+}
 
 function requestWeather(city) {
     socket.emit('cari_cuaca', { city: city });
@@ -205,6 +225,47 @@ function updateClock() {
         const options = { weekday: 'long', day: 'numeric', month: 'short' };
         // Pastikan pakai 'id-ID' untuk Bahasa Indonesia
         curDateElement.innerText = now.toLocaleDateString('id-ID', options);
+    }
+}
+
+function resetCountdown() {
+    // 1. Reset waktu ke awal (5 menit)
+    timeLeft = UPDATE_DURATION;
+    updateTimerDisplay();
+
+    // 2. Matikan interval lama biar gak numpuk
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    // 3. Mulai interval baru (jalan setiap 1 detik)
+    countdownInterval = setInterval(() => {
+        timeLeft--; // Kurangi 1 detik
+        
+        updateTimerDisplay(); // Update tulisan di layar
+
+        // JIKA WAKTU HABIS (00:00)
+        if (timeLeft <= 0) {
+            // Trigger Update Otomatis
+            if (currentCity) {
+                requestWeather(currentCity, true);
+            }
+            // Kembalikan waktu ke 5 menit lagi
+            timeLeft = UPDATE_DURATION; 
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const timerElement = document.getElementById('timer-update');
+    if (timerElement) {
+        // Konversi detik ke format MM:SS
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        
+        // Tambahkan angka '0' di depan jika satuan (misal 5 jadi 05)
+        const minStr = String(minutes).padStart(2, '0');
+        const secStr = String(seconds).padStart(2, '0');
+
+        timerElement.innerText = `Auto-update: ${minStr}:${secStr}`;
     }
 }
 
